@@ -126,8 +126,12 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
         // read NDEF message
         ndef?.connect()
 
-        val message = ndef?.ndefMessage
-                          ?.toString(Charset.forName("UTF-8")) ?: ""
+//        val message = ndef?.ndefMessage
+//                ?.toByteArray()
+//                          ?.toString() ?: ""
+
+        val message = bytesToHexString(ndef?.ndefMessage
+                ?.toByteArray())
         //val id = tag?.id?.toString(Charset.forName("ISO-8859-1")) ?: ""
         val id = bytesToHexString(tag?.id) ?: ""
         ndef?.close()
@@ -138,7 +142,7 @@ class FlutterNfcReaderPlugin(val registrar: Registrar) : MethodCallHandler, Even
     }
 
     private fun bytesToHexString(src: ByteArray?): String? {
-        val stringBuilder = StringBuilder("0x")
+        val stringBuilder = StringBuilder()
         if (src == null || src.isEmpty()) {
             return null
         }
